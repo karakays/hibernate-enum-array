@@ -1,0 +1,22 @@
+language: java
+
+os:
+  - linux
+
+jdk:
+  - oraclejdk8
+
+services:
+  - postgresql
+
+addons:
+  postgresql: "9.6"
+
+install:
+  - mvn install dependency:go-offline -Pskip-formatter -DskipTests=true -q
+
+before_script:
+  - psql -c 'create database nativejson;' -U postgres
+
+script:
+  - mvn install -Pci -B
