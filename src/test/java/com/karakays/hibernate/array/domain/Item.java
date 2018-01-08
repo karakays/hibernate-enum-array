@@ -35,7 +35,7 @@ public class Item {
     @JoinColumn(name="user_id")
     @ManyToOne(fetch=FetchType.EAGER)
     private User user;
-    @Column(name = "my_array", columnDefinition="text[]")
+    @Column(name = "properties", columnDefinition="text[]")
     @Type(type = "com.karakays.hibernate.array.EnumArrayType",
             parameters = { @Parameter(name="enumClass", value="com.karakays.hibernate.array.domain.Item$Property") })
     private List<Property> properties;
