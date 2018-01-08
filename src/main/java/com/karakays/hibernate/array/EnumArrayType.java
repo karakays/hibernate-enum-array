@@ -51,8 +51,9 @@ public class EnumArrayType implements UserType, ParameterizedType {
 
         List<Enum<?>> list = (List<Enum<?>>) value;
         ArrayList<Enum<?>> clone = new ArrayList<Enum<?>>();
-        for (Enum<?> intOn : list)
+        for (Enum<?> intOn : list) {
             clone.add(intOn);
+        }
 
         return clone;
     }
