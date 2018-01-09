@@ -30,6 +30,11 @@ import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.usertype.ParameterizedType;
 import org.hibernate.usertype.UserType;
 
+/**
+ * Array type that persists a list of custom enums
+ *
+ * @author Selçuk Karakayalı
+ */
 public class EnumArrayType implements UserType, ParameterizedType {
     private final int[] arrayTypes = new int[] { Types.ARRAY };
 
