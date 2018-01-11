@@ -1,11 +1,20 @@
-<!-- Copyright (C) 2018 Selçuk Karakayalı (skarakayali@gmail.com) Licensed 
-	under the Apache License, Version 2.0 (the "License"); you may not use this 
-	file except in compliance with the License. You may obtain a copy of the 
-	License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by 
-	applicable law or agreed to in writing, software distributed under the License 
-	is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY 
-	KIND, either express or implied. See the License for the specific language 
-	governing permissions and limitations under the License. -->
+<!--
+
+    Copyright (C) 2018 Selçuk Karakayalı (skarakayali@gmail.com)
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
@@ -14,14 +23,14 @@
 	<artifactId>hibernate-enum-array</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
-	<name>hibernate-native-json</name>
+	<name>${project.groupId}:${project.artifactId}</name>
+	<url>https://github.com/karakays/hibernate-enum-array/</url>
 	<description>Persist Java enums as native array type in a single column</description>
 
 	<properties>
-	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 		<lombok.version>1.16.16</lombok.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<querydsl.version>4.1.4</querydsl.version>
 		<postgre.sql.version>9.4.1212</postgre.sql.version>
 	</properties>
@@ -100,16 +109,33 @@
 						<target>${java.version}</target>
 					</configuration>
 				</plugin>
-
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>2.10.3</version>
+					<executions>
+						<execution>
+							<id>attach-javadocs</id>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+			</plugin>
+
 			<plugin>
 				<groupId>com.mycila</groupId>
 				<artifactId>license-maven-plugin</artifactId>
 				<version>2.11</version>
 				<configuration>
-					<header>LICENSE.txt</header>
+					<header>LICENSE</header>
 					<properties>
 						<owner>Selçuk Karakayalı</owner>
 						<email>skarakayali@gmail.com</email>
@@ -142,6 +168,12 @@
 		</developer>
 	</developers>
 
+	<scm>
+		<connection>scm:git:git://github.com/karakays/hibernate-enum-array.git</connection>
+		<developerConnection>scm:git:ssh://github.com:karakays/hibernate-enum-array.git</developerConnection>
+		<url>https://github.com/karakays/hibernate-enum-array/</url>
+	</scm>
+
 	<inceptionYear>2018</inceptionYear>
 
 	<licenses>
@@ -152,5 +184,80 @@
 		</license>
 	</licenses>
 
-	<url>https://github.com/karakays/hibernate-enum-array/</url>
+	<distributionManagement>
+		<repository>
+			<id>oss.sonatype.org</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+		<snapshotRepository>
+			<id>oss.sonatype.org</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<profiles>
+		<profile>
+			<id>ci</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+					</plugin>
+
+					<plugin>
+						<groupId>com.mycila</groupId>
+						<artifactId>license-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>validate</id>
+								<goals>
+									<goal>check</goal>
+								</goals>
+								<phase>initialize</phase>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<version>3.0.0</version>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<goals>
+									<goal>jar-no-fork</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.6</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
