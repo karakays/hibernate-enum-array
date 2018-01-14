@@ -21,7 +21,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.karakays.hibernate</groupId>
 	<artifactId>hibernate-enum-array</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1-SNAPSHOT</version>
 
 	<name>${project.groupId}:${project.artifactId}</name>
 	<url>https://github.com/karakays/hibernate-enum-array/</url>
@@ -170,7 +170,7 @@
 
 	<scm>
 		<connection>scm:git:git://github.com/karakays/hibernate-enum-array.git</connection>
-		<developerConnection>scm:git:ssh://github.com:karakays/hibernate-enum-array.git</developerConnection>
+		<developerConnection>scm:git:git@github.com:karakays/hibernate-enum-array.git</developerConnection>
 		<url>https://github.com/karakays/hibernate-enum-array/</url>
 	</scm>
 
