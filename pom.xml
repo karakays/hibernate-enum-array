@@ -127,6 +127,10 @@
 						<version>1.9.4</version>
 					</dependency>
 				</dependencies>
+				<configuration>
+					<!-- During release:perform, enable the "release" profile -->
+					<releaseProfiles>release</releaseProfiles>
+				</configuration>
 			</plugin>
 
 			<plugin>
@@ -229,7 +233,7 @@
 			<id>release</id>
 			<build>
 				<plugins>
-					<plugin>
+<!-- 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-source-plugin</artifactId>
 						<version>3.0.0</version>
@@ -245,7 +249,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>
-					</plugin>
+					</plugin> -->
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
