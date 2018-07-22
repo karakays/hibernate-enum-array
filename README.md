@@ -20,7 +20,7 @@ public class User {
     @Type(type = "com.karakays.hibernate.array.EnumArrayType",
             parameters = { @Parameter(name="enumClass", value="com.karakays.hibernate.array.domain.User$Badge") })
     private List<Badge> badges;
-
+}
 ```
 
 where Badge is a custom Enum
@@ -55,10 +55,10 @@ public class User {
 Following DDL is generated:
 
 ```
-    create table users (
-        id int8 not null,
-        name varchar(255),
-        badges text[],
-        primary key (id)
-    )
+create table users (
+    id int8 not null,
+    name varchar(255),
+    badges text[],
+    primary key (id)
+)
 ```
