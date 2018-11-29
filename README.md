@@ -9,8 +9,6 @@ Read/write an array of Java enums into a database table field without any join t
 Currently supported databases:
 - Postgresql
 
-Please see the test class to see a full example.
-
 ### Installation
 
 ```
@@ -43,6 +41,8 @@ public enum Badge {
 and its type is passed along using org.hibernate.annotations.Parameter annotation.
 
 Now you can persist a list of enums in a table field with no further relation tables.  
+
+Please see the test class to see a full example.
 
 ### DDL generation
 
