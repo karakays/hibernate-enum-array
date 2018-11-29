@@ -11,6 +11,16 @@ Currently supported databases:
 
 Please see the test class to see a full example.
 
+### Installation
+
+```
+<dependency>
+    <groupId>com.karakays.hibernate</groupId>
+    <artifactId>hibernate-enum-array</artifactId>
+    <version>0.1</version>
+</dependency>
+```
+
 ### Example 
 
 ```
