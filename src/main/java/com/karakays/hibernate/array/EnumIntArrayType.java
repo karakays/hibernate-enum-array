@@ -26,20 +26,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Array type that persists a list of custom enums as string
+ * Array type that persists a list of custom enums as integer
  *
  * @author Selçuk Karakayalı
  */
-public class EnumArrayType extends BaseEnumArrayType {
+public class EnumIntArrayType extends BaseEnumArrayType {
     public Object nullSafeGet(ResultSet rs, String[] names, SharedSessionContractImplementor session, Object owner)
             throws HibernateException, SQLException {
         if (names != null && names.length > 0 && rs != null && rs.getArray(names[0]) != null) {
-            String[] array = (String[]) rs.getArray(names[0]).getArray();
+            Integer[] values = ((Integer[]) rs.getArray(names[0]).getArray());
 
             List<Enum<?>> enumList = new ArrayList<>();
 
-            for (String s : array) {
-                enumList.add(Enum.valueOf((Class) mappedClass, s));
+            for (Integer value : values) {
+                for (Enum<?> enumConstant : mappedClass.getEnumConstants()) {
+                    if (enumConstant.ordinal() == value) {
+                        enumList.add(enumConstant);
+                    }
+                }
             }
             return enumList;
         }
@@ -50,8 +54,14 @@ public class EnumArrayType extends BaseEnumArrayType {
             throws HibernateException, SQLException {
         if (value != null && st != null) {
             List<Enum<?>> list = (List<Enum<?>>) value;
-            String[] castObject = list.stream().map(Enum::name).toArray(String[]::new);
-            Array array = session.connection().createArrayOf("text", castObject);
+            Integer[] castObject = list.stream().map(e -> {
+                if (e == null) {
+                    return null;
+                } else {
+                    return e.ordinal();
+                }
+            }).toArray(Integer[]::new);
+            Array array = session.connection().createArrayOf("int", castObject);
             st.setArray(index, array);
         } else {
             st.setNull(index, arrayTypes[0]);

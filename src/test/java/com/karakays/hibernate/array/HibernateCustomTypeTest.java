@@ -15,14 +15,8 @@
  */
 package com.karakays.hibernate.array;
 
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.hasItems;
-
-import java.io.Serializable;
-import java.util.Arrays;
-
+import com.karakays.hibernate.array.domain.Item;
+import com.karakays.hibernate.array.domain.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
@@ -34,8 +28,13 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.karakays.hibernate.array.domain.Item;
-import com.karakays.hibernate.array.domain.User;
+import java.io.Serializable;
+import java.util.Arrays;
+
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.hasItems;
 
 public class HibernateCustomTypeTest {
     private static SessionFactory sessionFactory;
@@ -108,29 +107,34 @@ public class HibernateCustomTypeTest {
         User loadedUser = (User) load(User.class, user1.getId());
 
         assertThat(loadedUser.getBadges(), hasItems(User.Badge.MASTER));
+        assertThat(loadedUser.getBadgesAsInt(), hasItems(User.Badge.MASTER));
     }
     
     @Test
     public void shouldUpdateProperty() {
         Item item = (Item) load(Item.class, item2);
         item.setProperties(Arrays.asList(Item.Property.ALL));
-        
+        item.setPropertiesAsInt(Arrays.asList(Item.Property.ALL));
+
         save(item);
         item = load(Item.class, item2);
 
         assertThat(item.getProperties(), hasItems(Item.Property.ALL));
+        assertThat(item.getPropertiesAsInt(), hasItems(Item.Property.ALL));
     }
     
     @Test
     public void shouldDeleteProperty() {
         Item item = (Item) load(Item.class, item2);
-        item.setProperties(null);;
+        item.setProperties(null);
+        item.setPropertiesAsInt(null);
 
         update(item);
 
         item = (Item) load(Item.class, item2);
 
         assertThat(item.getProperties(), nullValue());
+        assertThat(item.getPropertiesAsInt(), nullValue());
     }
 
     @SuppressWarnings("unchecked")
