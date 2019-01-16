@@ -23,6 +23,7 @@ import java.io.Serializable;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Properties;
 
 /**
@@ -52,7 +53,7 @@ public abstract class BaseEnumArrayType implements UserType, ParameterizedType {
     }
 
     public boolean equals(Object x, Object y) throws HibernateException {
-        return x == null ? y == null : x.equals(y);
+        return Objects.equals(x, y);
     }
 
     public int hashCode(Object x) throws HibernateException {
@@ -64,13 +65,7 @@ public abstract class BaseEnumArrayType implements UserType, ParameterizedType {
             return null;
         }
 
-        List<Enum<?>> list = (List<Enum<?>>) value;
-        ArrayList<Enum<?>> clone = new ArrayList<Enum<?>>();
-        for (Enum<?> intOn : list) {
-            clone.add(intOn);
-        }
-
-        return clone;
+        return new ArrayList<>((List<Enum<?>>) value);
     }
 
     public boolean isMutable() {

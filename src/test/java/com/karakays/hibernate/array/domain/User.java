@@ -15,26 +15,16 @@
  */
 package com.karakays.hibernate.array.domain;
 
-import java.util.Arrays;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
+
+import javax.persistence.*;
+import java.util.Arrays;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor(access=AccessLevel.PRIVATE)
@@ -52,6 +42,10 @@ public class User {
     @Type(type = "com.karakays.hibernate.array.EnumArrayType",
             parameters = { @Parameter(name="enumClass", value="com.karakays.hibernate.array.domain.User$Badge") })
     private List<Badge> badges;
+    @Column(name = "badges_as_int", columnDefinition="int[]")
+    @Type(type = "com.karakays.hibernate.array.EnumIntArrayType",
+            parameters = { @Parameter(name="enumClass", value="com.karakays.hibernate.array.domain.User$Badge") })
+    private List<Badge> badgesAsInt;
     
     public User(String name) {
         this.name = name;
@@ -60,6 +54,7 @@ public class User {
     public User(String name, Badge... badges) {
         this(name);
         this.badges = Arrays.asList(badges);
+        this.badgesAsInt = Arrays.asList(badges);
      }
     
     public enum Badge {
