@@ -15,85 +15,22 @@
  */
 package com.karakays.hibernate.array;
 
-import java.io.Serializable;
+import org.hibernate.HibernateException;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
+
 import java.sql.Array;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
-
-import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SharedSessionContractImplementor;
-import org.hibernate.usertype.ParameterizedType;
-import org.hibernate.usertype.UserType;
 
 /**
  * Array type that persists a list of custom enums
  *
  * @author Selçuk Karakayalı
  */
-public class EnumArrayType implements UserType, ParameterizedType {
-    private final int[] arrayTypes = new int[] { Types.ARRAY };
-
-    private Class<Enum<?>> mappedClass;
-
-    protected void setMappedClass(Class<Enum<?>> mappedClass) {
-        this.mappedClass = mappedClass;
-    }
-
-    protected Class<Enum<?>> getMappedClass() {
-        return mappedClass;
-    }
-
-    public int[] sqlTypes() {
-        return arrayTypes;
-    }
-
-    public Class<List> returnedClass() {
-        return List.class;
-    }
-
-    public boolean equals(Object x, Object y) throws HibernateException {
-        return x == null ? y == null : x.equals(y);
-    }
-
-    public int hashCode(Object x) throws HibernateException {
-        return x == null ? 0 : x.hashCode();
-    }
-
-    public Object deepCopy(Object value) throws HibernateException {
-        if (value == null) {
-            return null;
-        }
-
-        List<Enum<?>> list = (List<Enum<?>>) value;
-        ArrayList<Enum<?>> clone = new ArrayList<Enum<?>>();
-        for (Enum<?> intOn : list) {
-            clone.add(intOn);
-        }
-
-        return clone;
-    }
-
-    public boolean isMutable() {
-        return false;
-    }
-
-    public Serializable disassemble(Object value) throws HibernateException {
-        return (Serializable) value;
-    }
-
-    public Object assemble(Serializable cached, Object owner) throws HibernateException {
-        return cached;
-    }
-
-    public Object replace(Object original, Object target, Object owner) throws HibernateException {
-        return original;
-    }
-
+public abstract class EnumArrayType extends BaseEnumArrayType {
     public Object nullSafeGet(ResultSet rs, String[] names, SharedSessionContractImplementor session, Object owner)
             throws HibernateException, SQLException {
         if (names != null && names.length > 0 && rs != null && rs.getArray(names[0]) != null) {
@@ -118,17 +55,6 @@ public class EnumArrayType implements UserType, ParameterizedType {
             st.setArray(index, array);
         } else {
             st.setNull(index, arrayTypes[0]);
-        }
-    }
-
-    public void setParameterValues(Properties parameters) {
-        if (parameters.containsKey("enumClass")) {
-            String enumClassName = parameters.getProperty("enumClass");
-            try {
-                setMappedClass((Class<Enum<?>>) Class.forName(enumClassName));
-            } catch (ClassNotFoundException e) {
-                throw new HibernateException("Specified enum class could not be found", e);
-            }
         }
     }
 }
